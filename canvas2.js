@@ -91,6 +91,11 @@ window.onload=(function() {
     }
     drawIcons();
     function drawPortrait() {
+        // write text
+        c.font = "50px Helvetica";
+        c.fillStyle = "#FFEB5B"
+        c.fillText("3 Point Lighting", 50, canvasHeight/4);
+
         var image_size = [50,centerHeight - (100*spacer),200*spacer,150*spacer];
         x = 0;
         if (key_light.isVisible && fill_light.isVisible && back_light.isVisible) {
@@ -141,7 +146,12 @@ window.onload=(function() {
         // use rgba to add transparency
 
         grd.addColorStop(1, "rgba(252, 245, 207, 0.0)");
-        c.fillStyle = grd;
+        if (canvasWidth >  900) {
+            c.fillStyle = grd;
+        }
+        else {
+            c.fillStyle = "#FFEB5B"
+        }
         c.fill();
     }
 
