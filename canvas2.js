@@ -15,11 +15,17 @@ window.onload=(function() {
     var c = canvas.getContext("2d");
 
     // setup coordinates and classes for icon
+    var icon_size = 50
+    var spacer = 1
+    if (canvasWidth > 1200) {
+        icon_size = 100;
+        spacer = 2
+    }
     var icons = {
-        key: ["key-light-icon",centerWidth - 100,centerHeight + 100,50,50],
-        fill: ["fill-light-icon",centerWidth + 200,centerHeight + 75,50,50],
-        back: ["back-light-icon",centerWidth + 50,centerHeight - 150,50,50],
-        person: ["person-icon",centerWidth + 50, centerHeight - 25,50,50],
+        key: ["key-light-icon",centerWidth - 100 * spacer,centerHeight + 100 * spacer,icon_size,icon_size],
+        fill: ["fill-light-icon",centerWidth + 200 * spacer,centerHeight + 75 * spacer,icon_size,icon_size],
+        back: ["back-light-icon",centerWidth + 50 * spacer,centerHeight - 150 * spacer,icon_size,icon_size],
+        person: ["person-icon",centerWidth + 50 * spacer, centerHeight - 25 * spacer,icon_size,icon_size],
     };
 
     // setup image classes
@@ -53,6 +59,9 @@ window.onload=(function() {
     var curr_y = 0;
     var curr_height = 0;
     var curr_width = 0;
+    var px_center = icons[Object.keys(icons)[3]][1] + 25
+    var py_center = icons[Object.keys(icons)[3]][2] + 25
+    console.log(px_center + " " + py_center)
     function drawIcons() {
         for(var i=0;i<Object.keys(icons).length;i++) {
             var curr_class = document.getElementById(icons[Object.keys(icons)[i]][0]);
@@ -61,19 +70,29 @@ window.onload=(function() {
             curr_height = icons[Object.keys(icons)[i]][3];
             curr_width = icons[Object.keys(icons)[i]][4];
             c.drawImage(curr_class,curr_x,curr_y,curr_height,curr_width);
+            
             // setup lines
             if (icons[Object.keys(icons)[i]][0] === "key-light-icon") {
-                key_light.path = [curr_x + curr_width, curr_y, curr_x + curr_x/2, curr_y - curr_y / 2 + curr_height, 2 * curr_x - curr_width,  curr_y - curr_y / 4, curr_x + curr_width, curr_y];
+                key_light.path = [curr_x + curr_width, curr_y,
+                    px_center+curr_width,py_center+curr_height/2,
+                    px_center-curr_width,py_center,
+                    curr_x + curr_width,curr_y];
             } else if (icons[Object.keys(icons)[i]][0] === "fill-light-icon") {
-                fill_light.path = [curr_x, curr_y, curr_x - curr_x / 4, curr_y - curr_height, curr_x - curr_width + 20, curr_y - curr_y / 4, curr_x, curr_y ];
+                fill_light.path = [curr_x, curr_y,
+                    px_center+curr_width*2,py_center-curr_height/2,
+                    px_center-curr_width,py_center+curr_height,
+                    curr_x, curr_y ];
             } else if (icons[Object.keys(icons)[i]][0] === "back-light-icon") {
-                back_light.path = [curr_x + curr_width/2 - 5, curr_y + curr_height, curr_x , curr_y + curr_y / 2, curr_x + curr_x / 4, curr_y + curr_y / 2 + 5,curr_x + curr_width/2 - 5, curr_y + curr_height];
+                back_light.path = [curr_x + curr_width/2 - 5, curr_y + curr_height,
+                    px_center+curr_width,py_center+curr_height/2,
+                    px_center-curr_width,py_center,
+                    curr_y + curr_height];
             }
         }
     }
     drawIcons();
     function drawPortrait() {
-        var image_size = [50,centerHeight - 100,200,150];
+        var image_size = [50,centerHeight - (100*spacer),200*spacer,150*spacer];
         x = 0;
         if (key_light.isVisible && fill_light.isVisible && back_light.isVisible) {
             x = 0;
@@ -97,9 +116,9 @@ window.onload=(function() {
     drawPortrait();
     function drawLight(curr_light) {
         var grd_x1;
-        var grd_x2;
+        var grd_x2 = px_center;
         var grd_y1;
-        var grd_y2;
+        var grd_y2 = py_center;
         c.beginPath();
         for ( i=0;i <= curr_light.length;i++) {
             if (i % 2 == 0) {
@@ -115,22 +134,14 @@ window.onload=(function() {
                 curr_y = curr_light[i];
                 c.lineTo(curr_x, curr_y);
             }
-            if (i==0) {
-                grd_x1 = curr_x;
-                grd_y1 = curr_y;
-            }
-            if (i==curr_light.length-1) {
-                grd_x2 = curr_x;
-                grd_y2 = curr_y;
-            }
             
         }
         // line colors
-        var grd = c.createLinearGradient(grd_x1,grd_x2,grd_y1,grd_y2);
-        grd.addColorStop(1, "#FFEB5B");
+        var grd = c.createLinearGradient(0,px_center/1.5,0,py_center/1.5);
+        grd.addColorStop(0, "#FFEB5B");
         // use rgba to add transparency
 
-        grd.addColorStop(0, "rgba(252, 245, 207, 0.0)");
+        grd.addColorStop(1, "rgba(252, 245, 207, 0.0)");
         c.fillStyle = grd;
         c.fill();
     }
@@ -140,6 +151,7 @@ window.onload=(function() {
         let rect = canvas.getBoundingClientRect(); 
         let x = event.clientX - rect.left; 
         let y = event.clientY - rect.top; 
+        console.log(x + " " + y)
         return ([x,y]);
     } 
 
