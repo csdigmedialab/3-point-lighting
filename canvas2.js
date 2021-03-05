@@ -61,7 +61,6 @@ window.onload=(function() {
     var curr_width = 0;
     var px_center = icons[Object.keys(icons)[3]][1] + 25
     var py_center = icons[Object.keys(icons)[3]][2] + 25
-    console.log(px_center + " " + py_center)
     function drawIcons() {
         for(var i=0;i<Object.keys(icons).length;i++) {
             var curr_class = document.getElementById(icons[Object.keys(icons)[i]][0]);
@@ -151,7 +150,6 @@ window.onload=(function() {
         let rect = canvas.getBoundingClientRect(); 
         let x = event.clientX - rect.left; 
         let y = event.clientY - rect.top; 
-        console.log(x + " " + y)
         return ([x,y]);
     } 
 
