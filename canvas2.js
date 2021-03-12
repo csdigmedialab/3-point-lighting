@@ -95,7 +95,10 @@ window.onload=(function() {
         c.font = "50px Helvetica";
         c.fillStyle = "#FFEB5B"
         c.fillText("3 Point Lighting", 50, canvasHeight/4);
-
+        
+        c.font = "16px Helvetica";
+        c.fillStyle = "#7D7D7D";
+        c.fillText("Source: https://www.mediacollege.com/lighting/three-point/",50, canvasHeight -50)
         var image_size = [50,centerHeight - (100*spacer),200*spacer,150*spacer];
         x = 0;
         if (key_light.isVisible && fill_light.isVisible && back_light.isVisible) {
